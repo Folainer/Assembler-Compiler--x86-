@@ -1,0 +1,51 @@
+0000                            DATA SEGMENT 
+0000    0A                      DATA1 DB 1010B
+0001    48 45 4C 4C 4F 5F 57    DATA2 DB "HELLO_WORLD", 0
+        4F 52 4C 44 00 
+000D    000A 000B               DATA3 DW 10D, 11D
+0011    00000002                DATA4 DD 10B
+0015    0000000A                DATA5 DD 10
+                            16D=YEAR EQU 365
+                              1=CONDITION EQU 1
+0019                            DATA ENDS 
+
+0000                            CODE SEGMENT 
+0000    00000000                EMPTY DD 0
+0004                            BEGIN:  
+0004                            IF CONDITION
+0004    B8 00000008             MOV EAX, 8H
+0009                            ELSE 
+0009                            MOV AL, 0H
+0009                            ENDIF 
+0009    B1 00                   MOV CL, 0H
+000B    B8 00000014             TEST: MOV EAX, 20
+0010    40                      INC EAX
+0011    FE C3                   INC BL
+0013    BB 00000020             MOV EBX, 20H
+0018    03 C3                   ADD EAX, EBX
+001A    B8 0000016D             MOV EAX, YEAR
+001F    32 8C 3B 00000000       XOR CL, DATA2[EBX+EDI]
+0026    80 8C 3B 0000000A F5    OR DATA2[EBX+EDI+10], 11110101B
+002E    76 0E 90 90 90 90       JBE NEXT
+0034    B8 00000004             MOV EAX, 4
+0039    BA 00000000             MOV EDX, 0
+003E                            NEXT:  
+003E    3E: FE 8C 3D 0000000    DEC DATA2[EBP+EDI+4]
+       4
+0046    20 9C 33 00000000       AND DS:DATA2[EBX+ESI], BL
+004D    A4                      MOVSB 
+004E    76 B4                   JBE BEGIN
+0050                            CODE ENDS 
+
+There are 0 errors:
+
+Symbol Table
+Symbol      Type    Address 
+DATA1       byte    0000    
+DATA2       byte    0001    
+DATA3       word    000D    
+DATA4       dword   0011    
+DATA5       dword   0015    
+EMPTY       dword   0000    
+BEGIN       Near    004E    
+NEXT        Near    002E    
